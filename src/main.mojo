@@ -1,8 +1,8 @@
-"""CLI: extract plain text from .docx files (the `word` binary).
+"""CLI: extract plain text from .docx files (the `docx` binary).
 
-    word <file.docx> [more.docx ...]   extract text and print it
-    word --info <file.docx>            list the ZIP members (no text)
-    word --help
+    docx <file.docx> [more.docx ...]   extract text and print it
+    docx --info <file.docx>            list the ZIP members (no text)
+    docx --help
 
 Run it via `pixi run extract -- …` (resolves the zlib shim through CONDA_PREFIX).
 Control characters in extracted text are escaped (\\xNN) so output never garbles
@@ -16,7 +16,7 @@ from zlib import inflate
 
 
 def _usage():
-    print("usage: word [--info] <file.docx> [more.docx ...]")
+    print("usage: docx [--info] <file.docx> [more.docx ...]")
     print("  -i, --info   list the ZIP members instead of the text")
     print("  -h, --help   show this help")
 

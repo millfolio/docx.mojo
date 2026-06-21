@@ -1,5 +1,5 @@
 [workspace]
-name = "word"
+name = "docx"
 version = "0.1.0"
 authors = ["Marius S <marius@seritan.net>"]
 description = "A from-scratch .docx-to-text extractor in Mojo. Depends on zlib.mojo for ZIP DEFLATE."
@@ -18,7 +18,7 @@ zlib = ">=1.3.1,<2"
 # Build the zlib shim (from the sibling ../zlib.mojo) into THIS env's lib so the
 # dlopen at runtime resolves it. Mirrors pdftotext.mojo.
 ffi = "bash ../zlib.mojo/src/ffi/build.sh"
-build = { cmd = "mkdir -p build && mojo build src/main.mojo -I src -I ../zlib.mojo/src -o build/word", depends-on = ["ffi"] }
+build = { cmd = "mkdir -p build && mojo build src/main.mojo -I src -I ../zlib.mojo/src -o build/docx", depends-on = ["ffi"] }
 test  = { cmd = "mkdir -p build && python3 tests/make_fixtures.py && mojo build src/docx_test.mojo -I src -I ../zlib.mojo/src -o build/docx-test && ./build/docx-test", depends-on = ["ffi"] }
 # Extract text from a .docx: pixi run extract -- path/to/file.docx
-extract = { cmd = "./build/word", depends-on = ["build"] }
+extract = { cmd = "./build/docx", depends-on = ["build"] }

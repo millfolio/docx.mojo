@@ -1,4 +1,4 @@
-# word.mojo
+# docx.mojo
 
 A from-scratch **.docx → plain text** extractor in Mojo. Sibling to
 `pdftotext.mojo`; mirrors its layout and conventions so it can slot into
@@ -48,7 +48,7 @@ O(n²)).
 Built with the unified Mojo toolchain via `pixi`, like every Mojo project here:
 
 ```bash
-pixi run build     # builds the zlib shim + the `word` CLI → build/word
+pixi run build     # builds the zlib shim + the `docx` CLI → build/docx
 pixi run test      # builds REAL .docx fixtures (python3 + stdlib zipfile),
                    # then asserts extraction over BOTH ZIP_DEFLATED and
                    # ZIP_STORED, including an &amp; → "Tom & Jerry" entity
@@ -62,13 +62,13 @@ pixi run extract -- file.docx     # extract + print (sets CONDA_PREFIX)
 ## CLI
 
 ```bash
-tools/word file.docx           # extract text (sets CONDA_PREFIX, builds on first use)
-tools/word --info file.docx    # list ZIP members + their compression method
+tools/docx file.docx           # extract text (sets CONDA_PREFIX, builds on first use)
+tools/docx --info file.docx    # list ZIP members + their compression method
 ```
 
 The compiled binary `dlopen`s `libzlibmojo.so` via `$CONDA_PREFIX/lib`. Run it
-through `pixi run extract` or the `tools/word` wrapper so that resolves; a bare
-`./build/word` without `CONDA_PREFIX` exits with an error rather than emitting
+through `pixi run extract` or the `tools/docx` wrapper so that resolves; a bare
+`./build/docx` without `CONDA_PREFIX` exits with an error rather than emitting
 raw compressed bytes.
 
 ## Scope / not yet handled

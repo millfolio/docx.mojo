@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 #
-# word — run the .docx extractor with the zlib shim resolvable, no `pixi run`
+# docx — run the .docx extractor with the zlib shim resolvable, no `pixi run`
 # needed. The compiled binary dlopens libzlibmojo.so via $CONDA_PREFIX/lib; this
 # wrapper points CONDA_PREFIX at the pixi env (and builds the binary + shim on
 # first use), so you can just:
 #
-#   tools/word file.docx
-#   tools/word --info file.docx
+#   tools/docx file.docx
+#   tools/docx --info file.docx
 #
-# Symlink it onto your PATH if you like:  ln -s "$PWD/tools/word" ~/.local/bin/
+# Symlink it onto your PATH if you like:  ln -s "$PWD/tools/docx" ~/.local/bin/
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 ENV="$ROOT/.pixi/envs/default"
-BIN="$ROOT/build/word"
+BIN="$ROOT/build/docx"
 
 # Build the binary + zlib shim on first use (or if the shim is missing).
 if [ ! -x "$BIN" ] || [ ! -f "$ENV/lib/libzlibmojo.so" ]; then
