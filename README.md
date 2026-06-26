@@ -1,5 +1,7 @@
 # docx.mojo
 
+> 💬 **Community:** questions, ideas, and show-and-tell live in [GitHub Discussions](https://github.com/millfolio/millfolio/discussions).
+
 A from-scratch **.docx → plain text** extractor in Mojo. Sibling to
 `pdftotext.mojo`; mirrors its layout and conventions so it can slot into
 `vault/core/src/readers.mojo` next to `pdf_text`.
