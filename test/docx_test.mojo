@@ -6,7 +6,12 @@ Asserts: the known paragraph text appears IN ORDER with paragraph breaks, the
 `&amp;` entity decodes to `Tom & Jerry`, `<w:tab/>` becomes a tab, `<w:br/>`
 becomes a newline, and `&lt;`/`&gt;` decode to `<`/`>`."""
 
-from docx import extract_text, extract_text_from_xml, read_file, parse_central_directory
+from docx import (
+    extract_text,
+    extract_text_from_xml,
+    read_file,
+    parse_central_directory,
+)
 
 
 def _b(s: String) -> List[UInt8]:
@@ -26,17 +31,23 @@ def _check(label: String, text: String) raises:
     if i_hello == -1:
         raise Error(label + ": missing 'Hello, Word!' in [" + text + "]")
     if i_tom == -1:
-        raise Error(label + ": entity not decoded to 'Tom & Jerry' in [" + text + "]")
+        raise Error(
+            label + ": entity not decoded to 'Tom & Jerry' in [" + text + "]"
+        )
     if i_first == -1:
         raise Error(label + ": missing 'First' in [" + text + "]")
     if i_end == -1:
-        raise Error(label + ": &lt;/&gt; not decoded to 'The <end>.' in [" + text + "]")
+        raise Error(
+            label + ": &lt;/&gt; not decoded to 'The <end>.' in [" + text + "]"
+        )
     # Order: Hello < Tom < First < end.
     if not (i_hello < i_tom and i_tom < i_first and i_first < i_end):
         raise Error(label + ": paragraphs out of order in [" + text + "]")
     # Paragraph break between Hello and Tom.
     if text.find("Hello, Word!\nTom & Jerry") == -1:
-        raise Error(label + ": no paragraph break between p1 and p2 in [" + text + "]")
+        raise Error(
+            label + ": no paragraph break between p1 and p2 in [" + text + "]"
+        )
     # <w:tab/> -> tab between First and Second.
     if text.find("First\tSecond") == -1:
         raise Error(label + ": <w:tab/> not a tab in [" + text + "]")
@@ -49,11 +60,16 @@ def main() raises:
     # 0. Pure-XML unit (no ZIP) — the scanner in isolation.
     var xml = _b(
         '<w:document xmlns:w="x"><w:body>'
-        '<w:p><w:r><w:t>Alpha</w:t></w:r></w:p>'
-        '<w:p><w:r><w:t>A &amp; B</w:t></w:r></w:p>'
-        "</w:body></w:document>")
+        "<w:p><w:r><w:t>Alpha</w:t></w:r></w:p>"
+        "<w:p><w:r><w:t>A &amp; B</w:t></w:r></w:p>"
+        "</w:body></w:document>"
+    )
     var tx = extract_text_from_xml(xml)
-    if tx.find("Alpha") == -1 or tx.find("A & B") == -1 or tx.find("Alpha\nA & B") == -1:
+    if (
+        tx.find("Alpha") == -1
+        or tx.find("A & B") == -1
+        or tx.find("Alpha\nA & B") == -1
+    ):
         raise Error("xml-scan unit failed: [" + tx + "]")
 
     # 1. DEFLATE path — a ZIP_DEFLATED .docx.
@@ -61,10 +77,15 @@ def main() raises:
     var d_entries = parse_central_directory(d_data)
     var saw_deflate = False
     for i in range(len(d_entries)):
-        if d_entries[i].name == "word/document.xml" and d_entries[i].method == 8:
+        if (
+            d_entries[i].name == "word/document.xml"
+            and d_entries[i].method == 8
+        ):
             saw_deflate = True
     if not saw_deflate:
-        raise Error("deflated.docx: word/document.xml is not DEFLATE (method 8)")
+        raise Error(
+            "deflated.docx: word/document.xml is not DEFLATE (method 8)"
+        )
     var d_text = extract_text(d_data)
     _check("deflated.docx", d_text)
 
@@ -73,7 +94,10 @@ def main() raises:
     var s_entries = parse_central_directory(s_data)
     var saw_stored = False
     for i in range(len(s_entries)):
-        if s_entries[i].name == "word/document.xml" and s_entries[i].method == 0:
+        if (
+            s_entries[i].name == "word/document.xml"
+            and s_entries[i].method == 0
+        ):
             saw_stored = True
     if not saw_stored:
         raise Error("stored.docx: word/document.xml is not STORED (method 0)")
@@ -82,8 +106,13 @@ def main() raises:
 
     # 3. Both methods must yield identical text.
     if d_text != s_text:
-        raise Error("DEFLATE and STORED produced different text:\n["
-                    + d_text + "]\nvs\n[" + s_text + "]")
+        raise Error(
+            "DEFLATE and STORED produced different text:\n["
+            + d_text
+            + "]\nvs\n["
+            + s_text
+            + "]"
+        )
 
     print("docx extraction OK")
     print("  xml-scan -> 'Alpha' / 'A & B' with paragraph break")

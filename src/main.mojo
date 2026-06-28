@@ -23,11 +23,19 @@ def _usage():
 
 def _zlib_ok() -> Bool:
     """Self-check: inflate a tiny known buffer (zlib of 'ok' -> 2 bytes). Fails if
-    libzlibmojo.so can't be loaded — in which case DEFLATE entries can't decode."""
+    libzlibmojo.so can't be loaded — in which case DEFLATE entries can't decode.
+    """
     var probe = List[Int]()
-    probe.append(0x78); probe.append(0x9C); probe.append(0xCB); probe.append(0xCF)
-    probe.append(0x06); probe.append(0x00); probe.append(0x01); probe.append(0x4B)
-    probe.append(0x00); probe.append(0xDB)
+    probe.append(0x78)
+    probe.append(0x9C)
+    probe.append(0xCB)
+    probe.append(0xCF)
+    probe.append(0x06)
+    probe.append(0x00)
+    probe.append(0x01)
+    probe.append(0x4B)
+    probe.append(0x00)
+    probe.append(0xDB)
     var b = List[UInt8]()
     for i in range(len(probe)):
         b.append(UInt8(probe[i]))
@@ -92,8 +100,17 @@ def main() raises:
             print("  members: ", len(entries))
             for e in range(len(entries)):
                 var m = "STORED" if entries[e].method == 0 else (
-                    "DEFLATE" if entries[e].method == 8 else "method?")
-                print("    ", entries[e].name, "  (", m, ", ",
-                      entries[e].uncomp_size, " bytes)", sep="")
+                    "DEFLATE" if entries[e].method == 8 else "method?"
+                )
+                print(
+                    "    ",
+                    entries[e].name,
+                    "  (",
+                    m,
+                    ", ",
+                    entries[e].uncomp_size,
+                    " bytes)",
+                    sep="",
+                )
         else:
             print(_escape_controls(extract_text(data)))
