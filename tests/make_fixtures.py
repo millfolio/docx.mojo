@@ -42,10 +42,22 @@ DOCUMENT_XML = (
 )
 
 
+# A FIXED zip timestamp so regeneration is byte-for-byte reproducible. `writestr`
+# with a bare name stamps each entry with the CURRENT local time, which rewrote these
+# committed fixtures on every test run (a perpetually-dirty submodule). 1980-01-01 is
+# the ZIP epoch (the earliest a DOS date field can encode).
+_EPOCH = (1980, 1, 1, 0, 0, 0)
+
+
 def build(path, compression):
-    with zipfile.ZipFile(path, "w", compression=compression) as z:
-        z.writestr("[Content_Types].xml", CONTENT_TYPES)
-        z.writestr("word/document.xml", DOCUMENT_XML)
+    with zipfile.ZipFile(path, "w") as z:
+        for name, data in (
+            ("[Content_Types].xml", CONTENT_TYPES),
+            ("word/document.xml", DOCUMENT_XML),
+        ):
+            info = zipfile.ZipInfo(name, date_time=_EPOCH)
+            info.compress_type = compression  # per-entry; ZipInfo ignores the ZipFile default
+            z.writestr(info, data)
 
 
 def main():
