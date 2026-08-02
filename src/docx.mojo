@@ -30,7 +30,7 @@ def _ascii(s: String) -> List[UInt8]:
     var out = List[UInt8]()
     var p = s.unsafe_ptr()
     for i in range(s.byte_length()):
-        out.append(p[i])
+        out.append(p[unsafe_offset=i])
     return out^
 
 
@@ -299,7 +299,7 @@ def _list_eq_str(b: List[UInt8], s: String) -> Bool:
     if len(b) != m:
         return False
     for i in range(m):
-        if b[i] != sp[i]:
+        if b[i] != sp[unsafe_offset=i]:
             return False
     return True
 
@@ -355,7 +355,7 @@ def _local_name_is(data: List[UInt8], tag_start: Int, name: String) -> Bool:
     if p + m > n:
         return False
     for i in range(m):
-        if data[p + i] != sp[i]:
+        if data[p + i] != sp[unsafe_offset=i]:
             return False
     var after = data[p + m]  # delimiter after the local name
     return (
