@@ -81,7 +81,7 @@ def _u32le(data: List[UInt8], at: Int) -> Int:
 struct Buf(Movable):
     """An output buffer over `List[UInt8]` so `+=` is amortized O(1). Mojo's
     `String +=` reallocates per append — O(n^2) on the per-run text hot path.
-    (Same helper as pdftotext.mojo/src/pdf.mojo.)"""
+    (Same helper as pdftotext.mojo/src/pdf.mojo.)."""
 
     var data: List[UInt8]
 
