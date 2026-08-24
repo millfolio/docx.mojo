@@ -2,4 +2,4 @@ name = "docx"
 version = "0.1.1"
 description = "A from-scratch .docx-to-text extractor in Mojo"
 tags = ["docx", "documents", "text-extraction"]
-books = ["zlib-mojo"]
+tins = ["zlib-mojo"]
