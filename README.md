@@ -1,5 +1,7 @@
 # docx.mojo
 
+[![mojoshelf](https://mojoshelf.org/badge/docx.svg)](https://mojoshelf.org/tins/docx) [![mojo nightly](https://mojoshelf.org/badge/docx/nightly.svg)](https://mojoshelf.org/tins/docx)
+
 > 💬 **Community:** questions, ideas, and show-and-tell live in [GitHub Discussions](https://github.com/millfolio/millfolio/discussions).
 
 A from-scratch **.docx → plain text** extractor in Mojo. Sibling to
@@ -44,6 +46,18 @@ Supporting (also exported): `parse_central_directory`, `extract_entry`,
 `read_zip_member`, `extract_text_from_xml`, the `ZipEntry` struct, and the `Buf`
 byte-buffer helper (amortized-O(1) output append; `String +=` in a loop is
 O(n²)).
+
+## Install as a mojoshelf tin
+
+Published on [mojoshelf](https://mojoshelf.org/tins/docx) as `docx`:
+
+```sh
+pixi shelf add docx     # pixi mode (git source dependency)
+shelf add docx          # or as a git submodule
+```
+
+Maintainers release new versions with `shelf publish` from the repo root
+(see [getting started](https://mojoshelf.org/getting-started)).
 
 ## Build / test
 
