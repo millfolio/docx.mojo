@@ -1,6 +1,6 @@
 [workspace]
 name = "docx"
-version = "0.1.0"
+version = "0.1.3"
 authors = ["Marius S <marius@seritan.net>"]
 description = "A from-scratch .docx-to-text extractor in Mojo. Depends on zlib.mojo for ZIP DEFLATE."
 preview = ["pixi-build"]
